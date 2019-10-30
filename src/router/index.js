@@ -118,17 +118,18 @@ export const asyncRoutes = [
     ]
   } ,
   {
-    path: '/category',
+    path: '/category1',
     component: Layout,
     children: [
       {
         path: 'list',
-        component: () => import('@/pages/category/List'),
-        name: 'category',
-        meta: { title: '栏目管理', icon: 'tab' }
+        component: () => import('@/pages/category1/List'),
+        name: 'category1',
+        meta: { title: '栏目管理1', icon: 'tab' }
       }
     ]
   },
+ 
   {
     path: '/product',
     component: Layout,
@@ -179,6 +180,33 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/sys',
+    component: Layout,
+    meta:{title:"系统配置", icon: 'tab' },
+    children: [
+      {
+        path: 'category',
+        component: () => import('@/pages/sys/category'),
+        name: 'category',
+        meta: { title: '栏目管理', icon: 'tab' }
+      },
+      {
+        path: 'product',
+        component: () => import('@/pages/sys/product'),
+        name: 'product',
+        meta: { title: '产品管理', icon: 'shopping' }
+      },
+      {
+        path: 'product_details',
+        hidden:true,
+        component: () => import('@/pages/sys/productDetails'),
+        name: 'product_details',
+        meta: { title: '产品详情', icon: 'shopping' }
+      }
+      
+    ]
+  } ,
   {
     path: '/check',
     component: Layout,
