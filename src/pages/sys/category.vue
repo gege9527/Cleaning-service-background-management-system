@@ -29,7 +29,6 @@
     </div>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="visible" @close="dialogCloseHandler">
-        {{category}}
       <el-form ref="categoryForm" :model="category" :rules="rules">
         <el-form-item label="栏目名称" label-width="100px" prop="name">
           <el-input v-model="category.name" auto-complete="off" />
@@ -124,6 +123,7 @@ export default {
     dialogCloseHandler() {
       this.$refs.categoryForm.resetFields()
       this.closeModal()
+      this.fileList=[]
     },
     editHandler(row) {
       this.category = row

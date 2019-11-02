@@ -69,7 +69,15 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
+export function get (url, params) {
+  return service.get(url,{
+    params, // get 请求时带的参数
+    timeout: 10000,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+}
 // 自定义post
 export function post(url,data){
   return service.post(url, qs.stringify(data),{

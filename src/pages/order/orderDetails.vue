@@ -1,70 +1,187 @@
 <template>
-    <div class="orderDetails">
-        <h2>订单详情</h2>
-        <el-button size="small" type="text" @click="backHandler">返回</el-button>
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="顾客信息" name="ordercustomer">
-                <el-table :data="orderDetails">
-                <el-table-column label="姓名" prop="customer.realname"></el-table-column>
-               
-                <el-table-column label="手机号" prop="customer.telephone"></el-table-column>
-                <el-table-column label="照片" prop="customer.photo"></el-table-column>
-                </el-table>
-
+    <div class="order_details">
+        <el-button type="text" size="mini" @click="backHandler">返回</el-button>
+        <template>
+        <el-tabs v-model="activeName" >
+            <el-tab-pane label="基本信息" name="basic">
+                 <div class="baseMessage">
+                    <el-row>
+                        <el-col :span="6">ID：</el-col>
+                        <el-col :span="10">{{order_details.id}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">订单时间：</el-col>
+                        <el-col :span="10">{{order_details.orderTime}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">总价：</el-col>
+                        <el-col :span="10">{{order_details.total}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">状态：</el-col>
+                        <el-col :span="10">{{order_details.status}}</el-col>
+                    </el-row>
+                   
+                    </div>
             </el-tab-pane>
-            <el-tab-pane label="服务员信息" name="orderwaiter">
-                <el-table :data="orderDetails">
-                <el-table-column label="姓名" prop="waiter.realname"></el-table-column>
-               
-                <el-table-column label="手机号" prop="waiter.telephone"></el-table-column>
-                <el-table-column label="照片" prop="waiter.photo"></el-table-column>
-                </el-table>
+            <el-tab-pane label="顾客信息" name="customerMessage">
+                   
+                    <div class="baseMessage">
+                    <el-row>
+                        <el-col :span="6">ID：</el-col>
+                        <el-col :span="10">{{customerMessage.id}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">姓名：</el-col>
+                        <el-col :span="10">{{customerMessage.realname}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">手机号：</el-col>
+                        <el-col :span="10">{{customerMessage.telephone}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">状态：</el-col>
+                        <el-col :span="10">{{customerMessage.status}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="4">照片：</el-col>
+                        <el-col :span="10">
+                            <template #default="record">
+                                <img :src="scope.row.photo">
+                            </template>
+                        </el-col>
+                    </el-row>
+                   
+                    </div>
+                   
+                   
             </el-tab-pane>
-            <el-tab-pane label="服务地址信息" name="orderaddress">
-                <el-table :data="orderDetails">
-                <el-table-column label="省" prop="address.province"></el-table-column>
-                <el-table-column label="市" prop="address.city"></el-table-column>
-                <el-table-column label="区" prop="address.area"></el-table-column>
-                <el-table-column label="街道" prop="address.address"></el-table-column>
-                <el-table-column label="手机号" prop="address.telephone"></el-table-column>
-                </el-table>
+            <el-tab-pane label="服务员信息" name="waiterMessage">
+                <div class="baseMessage">
+                    <el-row>
+                        <el-col :span="6">ID：</el-col>
+                        <el-col :span="10">{{waiterMessage.id}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">姓名：</el-col>
+                        <el-col :span="10">{{waiterMessage.realname}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">手机号：</el-col>
+                        <el-col :span="10">{{waiterMessage.telephone}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">状态：</el-col>
+                        <el-col :span="10">{{waiterMessage.status}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="4">照片：</el-col>
+                        <el-col :span="10">
+                            <template #default="record">
+                                <img :src="scope.row.photo">
+                            </template>
+                        </el-col>
+                    </el-row>
+                   
+                </div>
             </el-tab-pane>
-             <el-tab-pane label="评论信息" name="comment">
-                <el-table :data="comment">
-                <el-table-column label="内容" prop="content"></el-table-column>
-                <el-table-column label="评论时间" prop="commentTime"></el-table-column>
-                
-                </el-table>
-                
+             <el-tab-pane label="地址信息" name="addressMessage">
+                <div class="baseMessage">
+                    <el-row>
+                        <el-col :span="6">ID：</el-col>
+                        <el-col :span="10">{{addressMessage.id}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">省份：</el-col>
+                        <el-col :span="10">{{addressMessage.province}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">城市：</el-col>
+                        <el-col :span="10">{{addressMessage.city}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">区域：</el-col>
+                        <el-col :span="10">{{addressMessage.area}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">详细地址：</el-col>
+                        <el-col :span="10">{{addressMessage.address}}</el-col>
+                    </el-row>
+                   
+                </div>
             </el-tab-pane>
+            <el-tab-pane label="评论信息" name="commentMessage">
+                <div class="baseMessage">
+                    <el-row>
+                        <el-col :span="6">评论内容：</el-col>
+                        <el-col :span="10">{{comment.id}}</el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="6">评论时间：</el-col>
+                        <el-col :span="10">{{comment.commentTime}}</el-col>
+                    </el-row>
+                   
+                </div>
+            </el-tab-pane>
+            
         </el-tabs>
+        </template>
     </div>
 </template>
 <script>
-import {mapState,mapActions} from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
     data(){
-        return{
-            activeName:"ordercustomer"
+        return {
+            activeName:'basic',
+            order_details:{},
+            customerMessage:'',
+            waiterMessage:'',
+            addressMessage:'',
+            comment:[]
         }
     },
     created(){
-        let customerId= this.$route.query.customerId
-        this.findorderDetails(customerId);
-        let id= this.$route.query.id
-        this.findorderComment(id)
+        this.order_details=this.$route.query.order;
+        this.findcustomerMessage();
+        this.findAllComment()
+        
     },
     computed:{
-       ...mapState("orderDetails",["orderDetails","comment"])
+        ...mapState('order',['orderMessage']),
+        ...mapState('comment',['comments']),
+        ...mapGetters('comment',['findAllCommentByOrderId'])
     },
     methods:{
-        ...mapActions("orderDetails",["findorderDetails","findorderComment"]),
+        ...mapActions('order',['findMessageByCustomerId']),
+        ...mapActions('comment',['findAllComment']),
         backHandler(){
             this.$router.go(-1)
         },
-  
-        
-        
+        findcustomerMessage(){
+            this.findMessageByCustomerId(this.order_details.customerId)
+           let result= this.orderMessage.filter((item)=>{
+                return item.status===this.order_details.status && item.id===this.order_details.id
+            })
+            this.customerMessage=result[0].customer
+            this.waiterMessage=result[0].waiter
+            this.addressMessage=result[0].address
+            
+        },
+        findCommentMessage(){
+            this.comment=findAllCommentByOrderId(this.order_details.id)
+        }
     }
 }
 </script>
+<style scoped>
+.baseMessage{
+    padding: 20px;
+    width: 400px;
+    height: 400px;
+  }
+  .baseMessage>.el-row{
+    height: 40px;
+    color: #606266;
+  }
+</style>

@@ -4,7 +4,7 @@
       
       <el-tab-pane label="所有订单" name="AllOrder">
       
-        <el-table :data="orders">
+        <el-table :data="orders" size="mini">
           <el-table-column label="订单编号" prop="id"></el-table-column>
           <el-table-column label="下单时间" prop="orderTime"></el-table-column>
           <el-table-column label="总价" prop="total"></el-table-column>
@@ -18,8 +18,8 @@
         </el-table>
      
       </el-tab-pane>
-      <el-tab-pane label="待支付" name="WaitPay">
-        <el-table :order="orderPay" >
+      <el-tab-pane label="待支付" name="待支付">
+        <el-table :order="filterOrdersByStatus(activeName)" size="mini">
           <el-table-column label="订单编号" prop="id"></el-table-column>
           <el-table-column label="下单时间" prop="orderTime"></el-table-column>
           <el-table-column label="总价" prop="total"></el-table-column>
@@ -27,8 +27,8 @@
           <el-table-column label="顾客id" prop="customerId"></el-table-column>
         </el-table>
       </el-tab-pane >
-      <el-tab-pane label="待派单" name="WaitSend">
-        <el-table :data="orderSend" >
+      <el-tab-pane label="待派单" name="待派单">
+        <el-table :data="filterOrdersByStatus(activeName)" size="mini">
           <el-table-column label="订单编号" prop="id"></el-table-column>
           <el-table-column label="下单时间" prop="orderTime"></el-table-column>
           <el-table-column label="总价" prop="total"></el-table-column>
@@ -41,8 +41,8 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="待接单" name="WaitReceive">
-        <el-table :data="orderReceive">
+      <el-tab-pane label="待接单" name="待接单">
+        <el-table :data="filterOrdersByStatus(activeName)" size="mini">
           <el-table-column label="订单编号" prop="id"></el-table-column>
           <el-table-column label="下单时间" prop="orderTime"></el-table-column>
           <el-table-column label="总价" prop="total"></el-table-column>
@@ -55,8 +55,8 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="待服务" name="WaitService">
-        <el-table  :data="orderService">
+      <el-tab-pane label="待服务" name="待服务">
+        <el-table  :data="filterOrdersByStatus(activeName)" size="mini">
           <el-table-column label="订单编号" prop="id"></el-table-column>
           <el-table-column label="下单时间" prop="orderTime"></el-table-column>
           <el-table-column label="总价" prop="total"></el-table-column>
@@ -64,8 +64,8 @@
           <el-table-column label="顾客id" prop="customerId"></el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="待确认" name="WaitSure">
-        <el-table :data="orderSure" >
+      <el-tab-pane label="待确认" name="待确认">
+        <el-table :data="filterOrdersByStatus(activeName)" size="mini">
           <el-table-column label="订单编号" prop="id"></el-table-column>
           <el-table-column label="下单时间" prop="orderTime"></el-table-column>
           <el-table-column label="总价" prop="total"></el-table-column>
@@ -73,8 +73,8 @@
           <el-table-column label="顾客id" prop="customerId"></el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="已完成" name="Complate">
-        <el-table  :data="orderComplate">
+      <el-tab-pane label="已完成" name="已完成">
+        <el-table  :data="filterOrdersByStatus(activeName)" size="mini">
           <el-table-column label="订单编号" prop="id"></el-table-column>
           <el-table-column label="下单时间" prop="orderTime"></el-table-column>
           <el-table-column label="总价" prop="total"></el-table-column>
@@ -90,15 +90,9 @@
         <el-form-item label="员工" prop="waiterId">
          
           <el-select v-model="order.waiterId"> 
-            <el-option v-for="a in orderReceive" :key="a.id" :value="a.waiterId" :label="a.waiterId"></el-option>
+            <el-option v-for="a in waiters" :key="a.id" :value="a.id" :label="a.realname"></el-option>
           </el-select>
         </el-form-item>
-        <!-- <el-form-item label="订单" prop="waiterId">
-         
-          <el-select v-model="order.id"> 
-            <el-option v-for="a in orderReceive" :key="a.id" :value="a.id" :label="a.id"></el-option>
-          </el-select>
-        </el-form-item> -->
         
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -127,13 +121,19 @@ export default {
   },
   created(){
     this.findAllOrders();
+    this.findAllWaiters();
   },
   computed:{
+    ...mapState('waiter',['waiters']),
     ...mapState("order",["orders","orderSend","orderReceive","orderService","orderSure","orderComplate","orderPay","visible","title","loading"]),
+    ...mapGetters("order",["filterOrdersByStatus"])
+
   },
   methods:{
-     ...mapMutations("order",["showModal","closeModal","setTitle"]),
+    ...mapMutations("order",["showModal","closeModal","setTitle"]),
     ...mapActions("order",["findAllOrders","Send","closeOrder"]),
+    ...mapActions("waiter",["findAllWaiters"]),
+
     //普通方法
     toSendOrder(id){
       this.showModal();
@@ -164,7 +164,7 @@ export default {
     toDetailHandler(order){
       this.$router.push({
         path:"./orderDetails",
-        query:{customerId:order.customerId,id:order.id}
+        query:{order}
       })
     },
     

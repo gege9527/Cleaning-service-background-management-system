@@ -118,31 +118,6 @@ export const asyncRoutes = [
     ]
   } ,
   {
-    path: '/category1',
-    component: Layout,
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/pages/category1/List'),
-        name: 'category1',
-        meta: { title: '栏目管理1', icon: 'tab' }
-      }
-    ]
-  },
- 
-  {
-    path: '/product',
-    component: Layout,
-    children: [
-      {
-        path: 'list',
-        component: () => import('@/pages/product/List'),
-        name: 'product',
-        meta: { title: '产品管理', icon: 'shopping' }
-      }
-    ]
-  },
-  {
     path: '/order',
     component:Layout,
     children: [
